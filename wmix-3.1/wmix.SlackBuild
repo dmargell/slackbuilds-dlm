@@ -1,0 +1,93 @@
+#!/bin/sh
+
+# Slackware build script for wmix
+
+# Written by Dave Margell <dmargell@gmail.com>
+
+PRGNAM=wmix
+VERSION=${VERSION:-3.1}
+ARCH=${ARCH:-x86_64}
+BUILD=${BUILD:-1}
+TAG=${TAG:-_dlm}
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/SBo}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  SLKLDFLAGS="-L/usr/lib"
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  SLKLDFLAGS="-L/usr/lib"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  SLKLDFLAGS="-L/usr/lib64"
+fi
+
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM-$VERSION
+tar -xvf $CWD/$PRGNAM-$VERSION.tar.gz
+cd $PRGNAM-$VERSION
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+# fix free() error
+patch -p1 << EOD
+--- wmix-3.1/wmix.c.orig
++++ wmix-3.1/wmix.c
+@@ -134,7 +134,7 @@ int main(int argc, char **argv)
+     }
+ 
+     /* handle writing PID file, silently ignore if we can't do it */
+-    pid = calloc(1, strlen(home) + 10);
++    pid = calloc(1, strlen(home) + 11);
+     sprintf(pid, "%s/.wmix.pid", home);
+     fp = fopen(pid, "w");
+     if (fp) {
+EOD
+
+# change version to 3.1
+sed -i 's/3\.0/3\.1/' wmix.c
+
+# fix the man page
+zcat wmix.1x.gz > wmix.1
+sed -i 's/\.\./\./' wmix.1
+gzip -9 wmix.1
+
+mkdir -p $PKG/usr/bin
+make install CFLAGS="$SLKCFLAGS" LDFLAGS="$SLKLDFLAGS" PREFIX="$PKG"/usr
+
+install -D -m 644 wmix.1.gz $PKG/usr/man/man1/wmix.1.gz
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a AUTHORS BUGS COPYING INSTALL NEWS README sample.wmixrc \
+  $PKG/usr/doc/$PRGNAM-$VERSION
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+mkdir -p $PKG/install
+cat > $PKG/install/slack-desc << EOD
+wmix: wmix is a dockapp mixer for fluxbox or windowmaker
+wmix:
+wmix: Homepage: http://www.ne.jp/asahi/linux/timecop/
+wmix:
+wmix:
+wmix:
+wmix:
+wmix:
+wmix:
+wmix:
+wmix:
+EOD
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

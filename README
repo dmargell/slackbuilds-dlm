@@ -1,0 +1,10 @@
+A small collection of SlackBuild scripts I use with Slackware 13.1.
+
+widelands:
+  Build 15 hasn't appeared at slackbuilds.org yet.
+
+lrzip:
+  Is here at version 0.46 until slackbuilds.org submissions reopen.
+
+wmix:
+  One of the simpler mixer dock apps. I use it with fluxbox.
