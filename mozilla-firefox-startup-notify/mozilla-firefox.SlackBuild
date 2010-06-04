@@ -73,7 +73,7 @@ mkdir -p $TMP $PKG/usr/lib${LIBDIRSUFFIX}
 
 cd $TMP
 rm -rf mozilla-$MOZVERS
-tar xvf $CWD/firefox-$VERSION.source.tar.bz2 || exit 1
+tar -xvf $CWD/firefox-$VERSION.source.tar.bz2 || exit 1
 cd mozilla-$MOZVERS || exit 1
 
 patch -p1 -i $CWD/ff-startup-notify.patch || exit 1
