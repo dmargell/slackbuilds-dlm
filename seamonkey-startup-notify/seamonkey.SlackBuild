@@ -238,4 +238,4 @@ seamonkey-solibs: This package is runtime only.  The include files and other fil
 seamonkey-solibs: development can be found in the seamonkey package.
 EOF
 cd $TMP/package-seamonkey-solibs
-/sbin/makepkg -l y -c n -p $TMP/seamonkey-solibs-$VERSION-$ARCH-$BUILD.txz
+/sbin/makepkg -l y -c n -p $TMP/seamonkey-solibs-$VERSION-$ARCH-$BUILD.${PKGTYPE:-tgz}
