@@ -7,8 +7,5 @@ mozilla-firefox-startup-notify:
 widelands:
   Build 15 hasn't appeared at slackbuilds.org yet.
 
-lrzip:
-  Is here at version 0.46 until slackbuilds.org submissions reopen.
-
 wmix:
   Simple mixer dock-app. I use it with fluxbox.
