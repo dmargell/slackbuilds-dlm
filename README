@@ -1,7 +1,6 @@
 A small collection of SlackBuild scripts I use with Slackware 13.1.
 
 seamonkey-startup-notify:
-mozilla-firefox-startup-notify:
   Add patch to get startup notification working. (bouncing icon)
 
 widelands:
