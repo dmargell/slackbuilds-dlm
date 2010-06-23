@@ -199,7 +199,7 @@ zcat $CWD/doinst.sh.gz | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" \
   > $PKG/install/doinst.sh
 
 cd $TMP/package-seamonkey
-/sbin/makepkg -l y -c n -p $TMP/seamonkey-$VERSION-$ARCH-$BUILD.txz
+/sbin/makepkg -l y -c n -p $TMP/seamonkey-$VERSION-$ARCH-$BUILD.${PKGTYPE:-tgz}
 
 # Create a standalone seamonkey-solibs package for RPM, gxine, etc.
 rm -r $TMP/package-seamonkey-solibs
