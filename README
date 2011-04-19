@@ -4,7 +4,7 @@ seamonkey-startup-notify:
   Add patch to get startup notification working. (bouncing icon)
 
 widelands:
-  Build 15 hasn't appeared at slackbuilds.org yet.
+  Add a script for build-16.
 
 wmix:
   Simple mixer dock-app. I use it with fluxbox.
