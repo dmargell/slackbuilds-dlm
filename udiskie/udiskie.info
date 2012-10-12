@@ -1,0 +1,8 @@
+PRGNAM="udiskie"
+VERSION="0.4.1"
+HOMEPAGE="https://bitbucket.org/byronclark/udiskie"
+DOWNLOAD="https://bitbucket.org/byronclark/udiskie/downloads/udiskie-0.4.1.tar.gz"
+MD5SUM="62e5d5faafa9dbf11423d3c77a87b9a0"
+REQUIRES=""
+MAINTAINER="Dave Margell"
+EMAIL="dmargell@gmail.com"

@@ -1,0 +1,7 @@
+Udiskie is a simple daemon to automount removable media. Media will be mounted
+at /media/<volume name> for any member of group plugdev and can be unmounted
+with "udiskie-umount /media/[MOUNT POINT]" or "udiskie-umount -a" to unmount
+all handled devices. Start udiskie as a user with "udiskie &" in ~/.xinitrc ,
+~/.fluxbox/startup or any place appropriate for your window manager.
+Specific mount options can be defined in ~/.config/udiskie/filters.conf
+and are read when udiskie starts. See "man udiskie" for details.
