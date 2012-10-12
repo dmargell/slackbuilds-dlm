@@ -1,0 +1,109 @@
+#!/bin/sh
+
+# Slackware build script for widelands.
+
+# Written for build-17 and Slackware 14.0 by
+# Dave Margell <dmargell@gmail.com>
+
+# Widelands is a strategy game similar to Settlers II.
+# Requires SDL_gfx and lua 5.1.x. Available at SlackBuilds.org.
+
+PRGNAM="widelands"
+VERSION="build17"
+ARCH=$(uname -m)
+BUILD=${BUILD:-1}
+TAG=${TAG:-_dlm}
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/SBo}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM-$VERSION-src
+tar -xvjf $CWD/$PRGNAM-$VERSION-src.tar.bz2
+cd $PRGNAM-$VERSION-src
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+sed -i -e '/Boost_USE_STATIC_LIBS/s:ON:OFF:' CMakeLists.txt
+
+patch -p1 --verbose << EOD_PATCH
+diff -up widelands-build17-src/src/main.cc.old widelands-build17-src/src/main.cc
+--- widelands-build17-src/src/main.cc.old	2012-04-23 05:46:49.000000000 -0400
++++ widelands-build17-src/src/main.cc	2012-07-23 20:29:13.781873959 -0400
+@@ -24,6 +24,7 @@
+ #include "wlapplication.h"
+ 
+ #include <config.h>
++#include <unistd.h>
+ 
+ #include <iostream>
+ #include <stdexcept>
+EOD_PATCH
+
+mkdir -p build/locale
+cd build
+
+cmake \
+ -DCMAKE_INSTALL_PREFIX=/usr \
+ -DWL_INSTALL_PREFIX=/usr \
+ -DWL_INSTALL_BINDIR=bin \
+ ..
+
+make install DESTDIR=$PKG
+
+mkdir -p $PKG/usr/share/applications
+cat > $PKG/usr/share/applications/widelands.desktop << EOF
+[Desktop Entry]
+Encoding=UTF-8
+Name=Widelands
+Name[de]=Widelands
+Comment="Settlers II" clone
+Comment[de]= Ein "Siedler II" Clone
+Exec=widelands
+Icon=/usr/share/games/widelands/pics/wl-ico-48.png
+Terminal=false
+Type=Application
+StartupNotify=false
+Categories=Game;StrategyGame;
+EOF
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a $PKG/usr/share/games/$PRGNAM/{ChangeLog,COPYING,CREDITS,VERSION} \
+  $PKG/usr/doc/$PRGNAM-$VERSION
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+mkdir -p $PKG/install
+cat > $PKG/install/slack-desc << EOF
+widelands: widelands: (strategy game similar to Settlers II)
+widelands:
+widelands: Homepage: http://www.widelands.org
+widelands:
+widelands:
+widelands:
+widelands:
+widelands:
+widelands:
+widelands:
+widelands:
+EOF
+
+cat > $PKG/install/doinst.sh << EOF
+if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database -q usr/share/applications >/dev/null 2>&1
+fi
+EOF
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
+
