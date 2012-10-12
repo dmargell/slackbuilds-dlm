@@ -1,10 +1,10 @@
-A small collection of SlackBuild scripts I use with Slackware 13.1.
+A small collection of SlackBuild scripts.
 
-seamonkey-startup-notify:
-  Add patch to get startup notification working. (bouncing icon)
+udiskie:
+  Add an SBo style script for udiskie (simple automount daemon).
 
 widelands:
-  Add a script for build-16.
+  Add a script for build-17 for use on Slackware 14.0.
 
 wmix:
   Simple mixer dock-app. I use it with fluxbox.
